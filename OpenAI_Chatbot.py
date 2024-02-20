@@ -15,9 +15,10 @@ st.set_page_config(
 )
 
 st.title("💬 Chatbot")
-st.caption("🚀 A streamlit chatbot powered by OpenAI LLM")
+# st.caption("🚀 A streamlit chatbot powered by OpenAI LLM")
+
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
+    st.session_state["messages"] = [{"role": "user", "content": "Hi, How are you?"}, {"role": "assistant", "content": "How can I help you?"}]
 
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
@@ -34,3 +35,12 @@ if prompt := st.chat_input():
     msg = response.choices[0].message.content
     st.session_state.messages.append({"role": "assistant", "content": msg})
     st.chat_message("assistant").write(msg)
+
+
+"""
+References:
+- For multiple page sample code -  https://github.com/francescocarlucci/learn-langchain/blob/main/pages/1LLMs.py
+- For multiple page example - https://learnlangchain.streamlit.app/Chains
+- Chatbot session example on streamlit - https://github.com/streamlit/llm-examples/blob/main/Chatbot.py
+- Multipage app guidance by streamlit - https://docs.streamlit.io/get-started/tutorials/create-a-multipage-app
+"""
