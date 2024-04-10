@@ -14,7 +14,11 @@ st.set_page_config(
     page_title="LangChain Parsers",
     page_icon="🤖"
 )
-openai.api_key = st.text_input('OPENAI_API_KEY')
+with st.form("getopenAIkey"):
+    key= st.text_input('OPENAI_API_KEY')
+    use_key= st.form_submit_button("🚀 Execute")
+    if use_key:
+        openai.api_key = key
 
 st.header(" Structure Output Parser")
 with st.form("basic_chain"):
