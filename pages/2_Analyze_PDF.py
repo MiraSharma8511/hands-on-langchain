@@ -13,14 +13,13 @@ import openai
 
 # def main():
 load_dotenv()
-openai.api_key = st.text_input('OPENAI_API_KEY')
 # openai.api_key = os.environ['OPENAI_API_KEY']
 # openai.api_key = os.environ['OPENAI_API_KEY']
-
-openai_api_key = openai.api_key
 
 st.set_page_config(page_title="Ask your PDF")
 st.header("Ask your PDF 💬")
+openai.api_key = st.text_input('OPENAI_API_KEY')
+openai_api_key = openai.api_key
 
 # upload file
 pdf = st.file_uploader("Upload your PDF", type="pdf")

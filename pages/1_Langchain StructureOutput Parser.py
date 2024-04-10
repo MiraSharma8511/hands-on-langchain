@@ -9,12 +9,12 @@ import os
 
 load_dotenv()
 # openai.api_key = os.environ['OPENAI_API_KEY']
-openai.api_key = st.text_input('OPENAI_API_KEY')
 
 st.set_page_config(
     page_title="LangChain Parsers",
     page_icon="🤖"
 )
+openai.api_key = st.text_input('OPENAI_API_KEY')
 
 st.header(" Structure Output Parser")
 with st.form("basic_chain"):
