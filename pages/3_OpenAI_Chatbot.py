@@ -13,7 +13,14 @@ st.set_page_config(
     page_title="Chatbot",
     page_icon="💬"
 )
-openai.api_key = st.text_input('OPENAI_API_KEY')
+# openai.api_key = st.text_input('OPENAI_API_KEY')
+
+with st.form("getopenAIkey"):
+    key= st.text_input('OPENAI_API_KEY')
+    use_key= st.form_submit_button("🚀 Execute")
+    if use_key:
+        openai.api_key = key
+
 
 st.title("💬 Chatbot")
 # st.caption("🚀 A streamlit chatbot powered by OpenAI LLM")
