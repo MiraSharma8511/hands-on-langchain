@@ -11,10 +11,10 @@ st.set_page_config(
     page_icon="🤖")
 
 with st.form("getopenAIkey"):
-    key= st.text_input('OPENAI_API_KEY')
+    openai.api_key= st.text_input('OPENAI_API_KEY')
     use_key= st.form_submit_button("🚀 Execute")
-    if use_key:
-        openai.api_key = key
+    # if use_key:
+    #     openai.api_key = key
 
 
 # openai.api_key = os.environ['OPENAI_API_KEY']
