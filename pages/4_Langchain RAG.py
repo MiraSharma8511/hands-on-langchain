@@ -15,7 +15,8 @@ import openai
 import os
 
 load_dotenv()
-openai.api_key = os.environ['OPENAI_API_KEY']
+# openai.api_key = os.environ['OPENAI_API_KEY']
+openai.api_key = st.text_input('OPENAI_API_KEY')
 
 st.set_page_config(
     page_title="LangChain RAG",

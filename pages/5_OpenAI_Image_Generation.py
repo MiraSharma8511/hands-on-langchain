@@ -6,13 +6,14 @@ import os
 from openai import OpenAI
 
 load_dotenv()
+st.set_page_config(
+    page_title="OpenAI Image Generation",
+    page_icon="🤖")
 
 openai.api_key = st.text_input('OPENAI_API_KEY')
 # openai.api_key = os.environ['OPENAI_API_KEY']
 
-st.set_page_config(
-    page_title="OpenAI Image Generation",
-    page_icon="🤖")
+
 
 client = OpenAI()
 with st.form("image_genaration"):

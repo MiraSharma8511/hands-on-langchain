@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-openai.api_key = os.environ['OPENAI_API_KEY']
+# openai.api_key = os.environ['OPENAI_API_KEY']
+openai.api_key = st.text_input('OPENAI_API_KEY')
 
 openai_api_key = openai.api_key
 st.set_page_config(

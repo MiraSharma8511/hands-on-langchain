@@ -14,7 +14,9 @@ import openai
 import os
 
 load_dotenv()
-openai.api_key = os.environ['OPENAI_API_KEY']
+# openai.api_key = os.environ['OPENAI_API_KEY']
+# openai.api_key = os.environ['OPENAI_API_KEY']
+openai.api_key = st.text_input('OPENAI_API_KEY')
 
 model = ChatOpenAI(temperature=0.0)
 link = st.text_input("Enter page link you want to search within")
