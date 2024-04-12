@@ -4,16 +4,19 @@ import openai
 import streamlit as st
 from dotenv import load_dotenv
 from openai import OpenAI
+
 load_dotenv()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 client = OpenAI()
 st.header("OpenAI Vison GPT-4-Turbo")
-with st.form("image_url"):
+
+with st.form("imageurl"):
     imageURL = st.text_input("Enter the image URL here")
-    st.image(imageURL)
-    submit_button = st.form_submit_button("Submit")
-    if submit_button:
+    submitted = st.form_submit_button("Submit")
+
+    if submitted:
+        st.image(imageURL)
         response = client.chat.completions.create(
           model="gpt-4-turbo",
           messages=[
@@ -33,7 +36,7 @@ with st.form("image_url"):
           max_tokens=300,
         )
 
-        st.header("See below what image is about")
+        st.header("Image Summary")
         image_summary = response.choices[0].message.content
         st.write(image_summary)
 
@@ -50,9 +53,11 @@ with st.form("image_url"):
                 voice="alloy",
                 input=image_summary
             )
-            response.write_to_file("output.mp3")
-        st.header("Listen the audio")
-        with open("output.mp3", "rb") as audio_file:
+            response.write_to_file("summary_output.mp3")
+
+        st.header("Listen the image summary audio")
+
+        with open("summary_output.mp3", "rb") as audio_file:
             st.audio(audio_file, format='audio/mp3')
 
 
