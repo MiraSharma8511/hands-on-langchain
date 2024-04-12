@@ -14,7 +14,7 @@ openai.api_key = os.environ['OPENAI_API_KEY']
 
 client = OpenAI()
 video = cv2.VideoCapture("data/videoanalysis.mp4")
-video_file = open('videoanalysis.mp4', 'rb')
+video_file = open('data/videoanalysis.mp4', 'rb')
 video_bytes = video_file.read()
 
 st.video(video_bytes)
