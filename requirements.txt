@@ -11,3 +11,4 @@ tiktoken
 bs4
 pexels-api-py
 opencv-python
+cv2
