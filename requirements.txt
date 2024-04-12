@@ -9,3 +9,5 @@ altair<5
 openai
 tiktoken
 bs4
+pexels-api-py
+opencv-python
