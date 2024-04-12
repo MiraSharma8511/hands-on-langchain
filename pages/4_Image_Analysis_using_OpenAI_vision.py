@@ -23,7 +23,8 @@ with st.form("imageurl"):
             {
               "role": "user",
               "content": [
-                {"type": "text", "text": "What’s in this image?, What is the image about?, summary of image"},
+                {"type": "text",
+                 "text": "What’s in this image?, What is the image about?, summary of image"},
                 {
                   "type": "image_url",
                   "image_url": {

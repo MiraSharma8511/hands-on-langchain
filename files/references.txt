@@ -2,14 +2,11 @@ Generate PPT
 https://python-pptx.readthedocs.io/en/latest/
 https://www.geeksforgeeks.org/creating-and-updating-powerpoint-presentations-in-python-using-python-pptx/
 https://towardsdatascience.com/automate-powerpoint-slides-creation-with-python-a639c7d429a6
+https://www.tutorialspoint.com/how-to-create-powerpoint-files-using-python
 
-
-Images in PPT
+Images/videos in PPT
 https://www.pexels.com/api
 https://pypi.org/project/pexels-api-py/
-
-
-
 
 Video analysis
 https://cookbook.openai.com/examples/gpt_with_vision_for_video_understanding
