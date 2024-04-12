@@ -1,4 +1,4 @@
-opencv-python
+opencv-python-headless
 langchain==0.1.6
 langchain-openai==0.0.6
 langchain-core==0.1.22
@@ -11,3 +11,4 @@ openai
 tiktoken
 bs4
 pexels-api-py
+opencv-python
