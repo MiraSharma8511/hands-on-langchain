@@ -11,88 +11,91 @@ import streamlit as st
 
 load_dotenv()
 openai.api_key = os.environ['OPENAI_API_KEY']
+with st.form("Video_analysis"):
+    submit = st.form_submit_button("Start")
+    if submit:
+        client = OpenAI()
+        video = cv2.VideoCapture("videoanalysis.mp4")
+        video_file = open('videoanalysis.mp4', 'rb')
+        video_bytes = video_file.read()
 
-client = OpenAI()
-video = cv2.VideoCapture("data/videoanalysis.mp4")
-video_file = open('videoanalysis.mp4', 'rb')
-video_bytes = video_file.read()
+        st.video(video_bytes)
 
-st.video(video_bytes)
+        base64Frames = []
 
-base64Frames = []
+        while video.isOpened():
+            success, frame = video.read()
+            if not success:
+                break
+            _, buffer = cv2.imencode(".jpg", frame)
+            base64Frames.append(base64.b64encode(buffer).decode("utf-8")/4)
 
-while video.isOpened():
-    success, frame = video.read()
-    if not success:
-        break
-    _, buffer = cv2.imencode(".jpg", frame)
-    base64Frames.append(base64.b64encode(buffer).decode("utf-8"))
+        video.release()
+        frame_counts = len(base64Frames)
+        st.write(frame_counts, "frames read.")
 
-video.release()
+        # display_handle = display(None, display_id=True)
+        # for img in base64Frames:
+        #     st.image(img)
+        # img_data = base64.b64decode(frame.encode("utf-8"))
+        # display_handle.display(Image(data=img_data))
+        # im = Image.open(r"path to your image")  # r to convert it to a raw string
+        # im.show()
+        # display_handle.update(Image(data=base64.b64decode(img.encode("utf-8"))))
+        # time.sleep(0.025)
 
-st.write(len(base64Frames), "frames read.")
+        PROMPT_MESSAGES = [
+            {
+                "role": "user",
+                "content": [
+                    "These are frames from a video that I want to upload. Generate a compelling description that I can upload along with the video.",
+                    *map(lambda x: {"image": x, "resize": 768}, base64Frames[0::5000]),
+                ],
+            },
+        ]
+        params = {
+            "model": "gpt-4-vision-preview",
+            "messages": PROMPT_MESSAGES,
+            "max_tokens": 200,
+        }
 
-# display_handle = display(None, display_id=True)
-# for img in base64Frames:
-#     st.image(img)
-# img_data = base64.b64decode(frame.encode("utf-8"))
-# display_handle.display(Image(data=img_data))
-# im = Image.open(r"path to your image")  # r to convert it to a raw string
-# im.show()
-# display_handle.update(Image(data=base64.b64decode(img.encode("utf-8"))))
-# time.sleep(0.025)
+        result = client.chat.completions.create(**params)
+        st.write(result.choices[0].message.content)
 
-PROMPT_MESSAGES = [
-    {
-        "role": "user",
-        "content": [
-            "These are frames from a video that I want to upload. Generate a compelling description that I can upload along with the video.",
-            *map(lambda x: {"image": x, "resize": 768}, base64Frames[0:]),
-        ],
-    },
-]
-params = {
-    "model": "gpt-4-vision-preview",
-    "messages": PROMPT_MESSAGES,
-    "max_tokens": 200,
-}
+        PROMPT_MESSAGES = [
+            {
+                "role": "user",
+                "content": [
+                    "These are frames of a video. Create a short voiceover script in the style of David Attenborough. Only include the narration.",
+                    *map(lambda x: {"image": x, "resize": 768}, base64),
+                ],
+            },
+        ]
 
-result = client.chat.completions.create(**params)
-st.write(result.choices[0].message.content)
+        params = {
+            "model": "gpt-4-vision-preview",
+            "messages": PROMPT_MESSAGES,
+            "max_tokens": 500,
+        }
 
-PROMPT_MESSAGES = [
-    {
-        "role": "user",
-        "content": [
-            "These are frames of a video. Create a short voiceover script in the style of David Attenborough. Only include the narration.",
-            *map(lambda x: {"image": x, "resize": 768}, base64Frames[0:]),
-        ],
-    },
-]
+        result = client.chat.completions.create(**params)
+        print(result.choices[0].message.content)
 
-params = {
-    "model": "gpt-4-vision-preview",
-    "messages": PROMPT_MESSAGES,
-    "max_tokens": 500,
-}
+        with st.spinner("Loading content..."):
+            response = requests.post(
+                "https://api.openai.com/v1/audio/speech",
+                headers={
+                    "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
+                },
+                json={
+                    "model": "tts-1-1106",
+                    "input": result.choices[0].message.content,
+                    "voice": "onyx",
+                },
+            )
 
-result = client.chat.completions.create(**params)
-print(result.choices[0].message.content)
+            audio = b""
+            for chunk in response.iter_content(chunk_size=1024 * 1024):
+                audio += chunk
 
-response = requests.post(
-    "https://api.openai.com/v1/audio/speech",
-    headers={
-        "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
-    },
-    json={
-        "model": "tts-1-1106",
-        "input": result.choices[0].message.content,
-        "voice": "onyx",
-    },
-)
-
-audio = b""
-for chunk in response.iter_content(chunk_size=1024 * 1024):
-    audio += chunk
-
-st.audio(audio)
+            st.audio(audio)

@@ -16,10 +16,9 @@ st.set_page_config(
     page_icon="💬"
 )
 
-api = os.environ['PEXELS_API_KEY']
 
-def parse_response_to_ppt_content(response):
-    text = response
+def parse_response_to_ppt_content(response_to_parse):
+    text = response_to_parse
 
     # Splitting text into sections
     sections = re.split(r'_+\n?', text.strip())
@@ -51,9 +50,9 @@ def parse_response_to_ppt_content(response):
     return result
 
 
-def response_parser_response_to_ppt_slides(response):
+def response_parser_response_to_ppt_slides(response_to_parse):
     pexel = Pexels(api)
-    slide_list = parse_response_to_ppt_content(response)
+    slide_list = parse_response_to_ppt_content(response_to_parse)
     for i in range(len(slide_list)):
         title = slide_list[i]['Title']
         st.header(title)
@@ -68,11 +67,11 @@ def response_parser_response_to_ppt_slides(response):
 
 st.title("🤖💻📑👔 AI Generated PPTs")
 client = OpenAI()
-prompt=""
+prompt = ""
 
 with st.form("ppt_generation_prompt"):
     topic = st.text_area("Enter topic related to which you want to generate slide upon")
-    number_of_slides=st.slider("Enter number of slides")
+    number_of_slides = st.slider("Enter number of slides")
     submitted = st.form_submit_button("Generate PPT")
 
     if submitted:
