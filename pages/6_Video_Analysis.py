@@ -65,7 +65,7 @@ with st.form("Video_analysis"):
     st.write("NOTE: This is only for demo purpose and not for industrial usage for now. To avoid heavy charges keep "
              "video link <= 2mins.")
     video_link = st.text_input("Enter video link.", value="https://www.youtube.com/watch?v=d95PPykB2vE")
-    user_question = st.text_area("Ask anything related to the video", value="Who is girl in the video?")
+    user_question = st.text_area("Ask anything related to the video", value="What is the video about? Tell me video summary")
     submit = st.form_submit_button("Start")
     path = "./pages/video"
     if submit:
