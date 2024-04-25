@@ -38,7 +38,7 @@ def delete_files(folder_path):
 
 def rename_file():
     # Get the path to the folder
-    folder_path = r"C:\Users\admin\Downloads\langchain-ask-pdf-main\pages\video"
+    folder_path = r"\pages\video"
 
     # Get a list of all the files in the folder
     files = os.listdir(folder_path)
@@ -53,7 +53,7 @@ def rename_file():
     os.rename(os.path.join(folder_path, first_file), os.path.join(folder_path, new_file_name))
     src = folder_path + "\\" + new_file_name
     print(src)
-    dst = r"C:\Users\admin\Downloads\langchain-ask-pdf-main"
+    dst = r"\data"
     # shutil.copyfile(src, dst)
     # 2nd option
     shutil.copy2(src, dst)  # dst can be a folder; use shutil.copy2() to preserve timestamp
