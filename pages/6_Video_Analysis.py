@@ -118,7 +118,7 @@ with st.form("Video_analysis"):
             params = {
                 "model": "gpt-4-vision-preview",
                 "messages": PROMPT_MESSAGES,
-                "max_tokens": 200,
+                "max_tokens": 16000,
             }
 
             result = client.chat.completions.create(**params)
@@ -137,7 +137,7 @@ with st.form("Video_analysis"):
             params = {
                 "model": "gpt-4-vision-preview",
                 "messages": PROMPT_MESSAGES,
-                "max_tokens": 1500,
+                "max_tokens": 16000,
             }
 
             result = client.chat.completions.create(**params)
