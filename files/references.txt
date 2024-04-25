@@ -10,3 +10,10 @@ https://pypi.org/project/pexels-api-py/
 
 Video analysis
 https://cookbook.openai.com/examples/gpt_with_vision_for_video_understanding
+
+Image download
+https://www.geeksforgeeks.org/how-to-download-an-image-from-a-url-in-python/
+
+PDF Analysis:
+- https://github.com/francescocarlucci/learn-langchain/blob/main/pages/1LLMs.py
+- https://learnlangchain.streamlit.app/Chains

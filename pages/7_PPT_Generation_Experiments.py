@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 import re
 from pexelsapi.pexels import Pexels
+from pptx import Presentation
 
 load_dotenv()
 openai.api_key = os.environ['OPENAI_API_KEY']
@@ -15,6 +16,8 @@ st.set_page_config(
     page_title="Chatbot",
     page_icon="💬"
 )
+
+topic = ""
 
 
 def parse_response_to_ppt_content(response_to_parse):
@@ -27,6 +30,8 @@ def parse_response_to_ppt_content(response_to_parse):
     result = []
 
     # Regular expressions to extract title, image, and details
+    # file_name_pattern = re.compile(r'PPT File Name:\s*(.*?)\s*Title:', re.IGNORECASE | re.DOTALL)
+    # print(file_name_pattern)
     title_pattern = re.compile(r'Title:\s*(.*?)\s*Image:', re.IGNORECASE | re.DOTALL)
     image_pattern = re.compile(r'Image:\s*\[(.*?)\]\s*Details:', re.IGNORECASE | re.DOTALL)
     details_pattern = re.compile(r'Details:\s*(.*?)$', re.IGNORECASE | re.DOTALL)
@@ -34,13 +39,25 @@ def parse_response_to_ppt_content(response_to_parse):
     # Extracting information for each section
     for section in sections:
         # Extracting title, image, and details
+        # file_name_match = re.search(file_name_pattern, section)
+        # print("__________file_name_match__________")
+        # print(file_name_match)
         title_match = re.search(title_pattern, section)
+        # print("__________title_match__________")
+        # print(title_match)
         image_match = re.search(image_pattern, section)
+        # print("_________________image_match________________")
+        # print(image_match)
         details_match = re.search(details_pattern, section)
+        # print("_______________details_match________________")
+        # print(details_match)
 
         # Creating dictionary for the section
         if title_match and image_match and details_match:
+            # print("___________________title_match.group(1).strip()_______________________")
+            # print(title_match.group(1).strip())
             section_dict = {
+                # "PPT File Name": file_name_match.group(1).strip(),
                 "Title": title_match.group(1).strip(),
                 "Image": image_match.group(1).strip(),
                 "Details": details_match.group(1).strip()
@@ -51,18 +68,29 @@ def parse_response_to_ppt_content(response_to_parse):
 
 
 def response_parser_response_to_ppt_slides(response_to_parse):
-    pexel = Pexels(api)
+    # pexel = Pexels(api)
+    prs = Presentation()
     slide_list = parse_response_to_ppt_content(response_to_parse)
     for i in range(len(slide_list)):
+        # ppt_name = slide_list[i]['PPT File Name']
         title = slide_list[i]['Title']
-        st.header(title)
-        image = slide_list[i]['Image']
-        st.write(image)
-        search_photos = pexel.search_photos(query=image, orientation='', size='50x50', color='', locale='', page=1,
-                                            per_page=1)
-        st.image(search_photos['photos'][0]['src']['original'])
         details = slide_list[i]['Details']
+        st.header(title)
         st.write(details)
+
+        layout = prs.slide_layouts[1]
+        first_slide = prs.slides.add_slide(layout)  # Adding first slide
+        first_slide.shapes.title.text = title
+        first_slide.placeholders[1].text = details
+        # if ppt_name != "":
+        #     file_name = ppt_name + ".pptx"
+        #     print(file_name)
+        prs.save("AI_Generated_PPT.pptx")
+        # image = slide_list[i]['Image']
+        # st.write(image)
+        # search_photos = pexel.search_photos(query=image, orientation='', size='50x50', color='', locale='', page=1,
+        #                                     per_page=1)
+        # st.image(search_photos['photos'][0]['src']['original'])
 
 
 st.title("🤖💻📑👔 AI Generated PPTs")
@@ -75,7 +103,13 @@ with st.form("ppt_generation_prompt"):
     submitted = st.form_submit_button("Generate PPT")
 
     if submitted:
-        prompt = ("""Generate %s slide of content for PPT on %s. Follow below rules:RULE-1: Each slide must contain "Title:","Image: ","Details: " RULE-2: Each slide must be separated by "_________________________________"RULE-3: Don't add slide number RULE-4: generate content between 1000 and 2000 characters only HARD RULE : Follow all above rules""" % (number_of_slides, topic))
+        prompt = (
+                """Generate %s slide of content for PPT on %s. Follow below rules:
+                    RULE-1: Each slide must contain "Title:","Image: ","Details: "
+                    RULE-2: For details in each slides keep content with bulletin points  
+                    RULE-3: Each slide must be separated by "_________________________________"
+                    RULE-4: Don't add slide number 
+                    RULE-5: generate content between 1000 and 5000 characters only HARD RULE : Follow all above rules""" % (number_of_slides, topic))
         print(prompt)
 
 with st.spinner("Generating content..."):

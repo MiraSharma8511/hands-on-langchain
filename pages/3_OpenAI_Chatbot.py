@@ -6,24 +6,22 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-# openai.api_key = os.environ['OPENAI_API_KEY']
+openai.api_key = os.environ['OPENAI_API_KEY']
 
 openai_api_key = openai.api_key
 st.set_page_config(
     page_title="Chatbot",
     page_icon="💬"
 )
-# openai.api_key = st.text_input('OPENAI_API_KEY')
+#
+# with st.form("getopenAIkey"):
+#     key= st.text_input('OPENAI_API_KEY')
+#     use_key= st.form_submit_button("🚀 Execute")
+#     if use_key:
+#         openai.api_key = key
 
-with st.form("getopenAIkey"):
-    key= st.text_input('OPENAI_API_KEY')
-    use_key= st.form_submit_button("🚀 Execute")
-    if use_key:
-        openai.api_key = key
 
-
-st.title("💬 Chatbot")
-# st.caption("🚀 A streamlit chatbot powered by OpenAI LLM")
+st.title("💬 GenAI Chatbot")
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = [{"role": "user", "content": "Hi, How are you?"}, {"role": "assistant", "content": "How can I help you?"}]
@@ -43,12 +41,3 @@ if prompt := st.chat_input():
     msg = response.choices[0].message.content
     st.session_state.messages.append({"role": "assistant", "content": msg})
     st.chat_message("🎶").write(msg)
-
-#
-# """
-# References:
-# - For multiple page sample code -  https://github.com/francescocarlucci/learn-langchain/blob/main/pages/1LLMs.py
-# - For multiple page example - https://learnlangchain.streamlit.app/Chains
-# - Chatbot session example on streamlit - https://github.com/streamlit/llm-examples/blob/main/Chatbot.py
-# - Multipage app guidance by streamlit - https://docs.streamlit.io/get-started/tutorials/create-a-multipage-app
-# """
