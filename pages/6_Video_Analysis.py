@@ -73,7 +73,7 @@ with st.form("Video_analysis"):
         download_video_from_youtube(video_link, path)
         rename_file()
         vide_read_path = r"C:\Users\admin\Downloads\langchain-ask-pdf-main\pages\video\video_analysis.mp4"
-        video = cv2.VideoCapture(vide_read_path)
+        video = cv2.VideoCapture("video_analysis.mp4")
         video_file = open(vide_read_path, 'rb')
         video_bytes = video_file.read()
         st.video(video_bytes)
