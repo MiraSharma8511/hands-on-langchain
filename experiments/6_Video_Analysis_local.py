@@ -38,7 +38,7 @@ def delete_files(folder_path):
 
 def rename_file():
     # Get the path to the folder
-    folder_path = "./pages/video"
+    folder_path = r"/pages/video"
 
     # Get a list of all the files in the folder
     files = os.listdir(folder_path)
@@ -51,10 +51,10 @@ def rename_file():
 
     # Rename the file
     os.rename(os.path.join(folder_path, first_file), os.path.join(folder_path, new_file_name))
-    src = folder_path + "/" + new_file_name
+    src = folder_path + "\\" + new_file_name
     print(src)
-    dst = r"./data"
-    shutil.copyfile(src, dst)
+    dst = r"/"
+    # shutil.copyfile(src, dst)
     # 2nd option
     shutil.copy2(src, dst)  # dst can be a folder; use shutil.copy2() to preserve timestamp
 
@@ -67,12 +67,12 @@ with st.form("Video_analysis"):
     video_link = st.text_input("Enter video link.", value="https://www.youtube.com/watch?v=d95PPykB2vE")
     user_question = st.text_area("Ask anything related to the video", value="Who is girl in the video?")
     submit = st.form_submit_button("Start")
-    path = "./pages/video"
+    path = r"/pages/video"
     if submit:
         delete_files(path)
         download_video_from_youtube(video_link, path)
         rename_file()
-        video_read_path = "./video/video_analysis.mp4"
+        video_read_path = r"/pages/video/video_analysis.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()
