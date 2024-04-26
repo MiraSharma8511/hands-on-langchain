@@ -17,3 +17,11 @@ https://www.geeksforgeeks.org/how-to-download-an-image-from-a-url-in-python/
 PDF Analysis:
 - https://github.com/francescocarlucci/learn-langchain/blob/main/pages/1LLMs.py
 - https://learnlangchain.streamlit.app/Chains
+
+Audio Analysis
+- https://community.openai.com/t/harnessing-the-power-of-openai-introducing-the-audio-insights-generator/283465, https://github.com/Ravi-Teja-konda/AudioInsightsGenerator/blob/main/AudioInsightsGenerator.ipynb
+- https://www.youtube.com/watch?v=6WyitW8_Tow
+
+Azure deployments
+- https://cookbook.openai.com/examples/azure/functions
+- https://cookbook.openai.com/

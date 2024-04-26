@@ -15,3 +15,4 @@ pexels-api-py
 python-pptx
 requests~=2.31.0
 pytube~=15.0.0
+moviepy~=1.0.3

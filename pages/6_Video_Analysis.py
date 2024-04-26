@@ -171,7 +171,7 @@ with st.form("Video_analysis"):
         # time.sleep(0.025)
 
 with st.form("GetVideoURL"):
-    user_question = st.text_area("Ask anything related to the video", value="Who is girl in the video?")
+    user_question = st.text_area("Ask anything related to the video", value="What is girl doing in video?")
     get_answer = st.form_submit_button("Get Answer")
     if get_answer:
         video_read_path = "./pages/video/video_analysis.mp4"
