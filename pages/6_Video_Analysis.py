@@ -75,7 +75,7 @@ def video_analysis(base64frames, fc):
     params = {
         "model": "gpt-4-vision-preview",
         "messages": PROMPT_MESSAGES,
-        "max_tokens": 200,
+        "max_tokens": 1500,
     }
 
     result = client.chat.completions.create(**params)
@@ -88,7 +88,7 @@ def audio_generation(base64frames, fc):
             "role": "user",
             "content": [
                 "These are frames of a video. Create a short voiceover script in english. Only include the narration.",
-                *map(lambda x: {"image": x, "resize": 768}, base64frames[0::fc]),
+                    *map(lambda x: {"image": x, "resize": 768}, base64frames[0::fc]),
             ],
         },
     ]
@@ -125,13 +125,15 @@ def audio_generation(base64frames, fc):
 
 def read_video_file(v_file):
     base64frames = []
-
+    count = 0
     with st.spinner("Working"):
         while v_file.isOpened():
             success, frame = v_file.read()
             if not success:
                 break
-            _, buffer = cv2.imencode(".jpg", frame)
+            _, buffer = cv2.imencode(".jpg".format(count), frame)
+            count += 10  # i.e. at 30 fps, this advances one second
+            v_file.set(cv2.CAP_PROP_POS_FRAMES, count)
             base64frames.append(base64.b64encode(buffer).decode("utf-8"))
 
         v_file.release()

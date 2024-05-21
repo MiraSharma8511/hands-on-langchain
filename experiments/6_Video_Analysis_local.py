@@ -15,7 +15,7 @@ load_dotenv()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 st.set_page_config(page_title="Video Analysis")
-st.header("Million dollar Video Analysis🎥📷")
+st.header("Video Analysis🎥📷")
 
 
 def download_video_from_youtube(link, save_path):
@@ -138,6 +138,9 @@ def read_video_file(v_file):
         frameCounts = len(base64frames)
         st.write(frameCounts, "frames read.")
         return base64frames, frameCounts
+
+
+
 
 
 client = OpenAI()

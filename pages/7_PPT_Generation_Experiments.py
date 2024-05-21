@@ -86,6 +86,8 @@ def response_parser_response_to_ppt_slides(response_to_parse):
         #     file_name = ppt_name + ".pptx"
         #     print(file_name)
         prs.save("AI_Generated_PPT.pptx")
+        if i == (len(slide_list) - 1):
+            st.title("AI_Generated_PPT.pptx created and saved to folder")
         # image = slide_list[i]['Image']
         # st.write(image)
         # search_photos = pexel.search_photos(query=image, orientation='', size='50x50', color='', locale='', page=1,
@@ -105,11 +107,13 @@ with st.form("ppt_generation_prompt"):
     if submitted:
         prompt = (
                 """Generate %s slide of content for PPT on %s. Follow below rules:
-                    RULE-1: Each slide must contain "Title:","Image: ","Details: "
-                    RULE-2: For details in each slides keep content with bulletin points  
-                    RULE-3: Each slide must be separated by "_________________________________"
-                    RULE-4: Don't add slide number 
-                    RULE-5: generate content between 1000 and 5000 characters only HARD RULE : Follow all above rules""" % (number_of_slides, topic))
+                    RULE-1: Generate content for the topic provided instead of suggesting how to create a PPT for that topic
+                    RULE-2: Each slide must contain "Title:","Image: ","Details: "
+                    RULE-3: For details in each slides keep content with bulletin points  
+                    RULE-4: Each slide must be separated by "_________________________________"
+                    RULE-5: Don't add slide number 
+                    RULE-6: Differentiate content between 1000 and 5000 characters only HARD RULE : Follow all above rules""" % (
+        number_of_slides, topic))
         print(prompt)
 
 with st.spinner("Generating content..."):
