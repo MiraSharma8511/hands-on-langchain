@@ -1,4 +1,4 @@
-opencv-python-headless
+opencv-python-headless~=4.9.0.80
 opencv-python~=4.9.0.80
 langchain==0.1.6
 langchain-openai==0.0.6
