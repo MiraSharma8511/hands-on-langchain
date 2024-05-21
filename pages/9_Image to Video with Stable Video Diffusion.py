@@ -1,9 +1,4 @@
-import requests
-import os
-import requests
-
 import streamlit as st
-from IPython.core.display import Video
 
 st.subheader("Image to Video using Stable Video Diffusion")
 st.markdown(":blue[NOTE: We tried running the same code on local machine but machine need to have NVIDIA Graphic card "
