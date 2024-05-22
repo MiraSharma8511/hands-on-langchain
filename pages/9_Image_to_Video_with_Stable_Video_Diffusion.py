@@ -44,7 +44,8 @@ code3 = """video = Video(filepath = "./generated.mp4", format = "mp4")
 display(video)"""
 st.write("Explain Code")
 st.code(code3, language='python')
-st.write("This is AI generated video. We had to upload it to youtube as this video wasn't supported from file folder.")
+st.write("This is AI generated video. We had to upload it to youtube as displaying video wasn't supported from file "
+         "folder in streamlit app.")
 st.video("https://youtu.be/7jv7viojLoI")
 # st.video(r"E:\Machine Learning Coding\hands-on-langchain\Rocket-Video.mp4", format="mp4")
 
