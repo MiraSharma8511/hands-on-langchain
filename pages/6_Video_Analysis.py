@@ -15,7 +15,7 @@ load_dotenv()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 st.set_page_config(page_title="Video Analysis")
-st.header("Million dollar Video Analysis🎥📷")
+st.header("Video Analysis using OpenAI🎥📷")
 
 
 def download_video_from_youtube(link, save_path):
