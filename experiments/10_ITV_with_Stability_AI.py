@@ -73,7 +73,7 @@ def generate_video_stability(generation_id):
         print("Generation in-progress, try again in 10 seconds.")
     elif response.status_code == 200:
         print("Generation complete!")
-        with open("../experiments/video.mp4", 'wb') as file:
+        with open("video.mp4", 'wb') as file:
             video_file = response.content
             file.write(video_file)
             st.video(video_file)
