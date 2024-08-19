@@ -18,9 +18,9 @@ client = OpenAI()
 
 def execute_image_api(user_prompt):
     response = client.images.generate(
-        model="dall-e-2",
+        model="dall-e-3",
         prompt=user_prompt,
-        size="256x256",
+        size="512x512",
         quality="standard",
         n=2,
     )
@@ -29,7 +29,7 @@ def execute_image_api(user_prompt):
 
 
 with st.form("image_generation"):
-    prompt = st.text_input("Share your imaginations")
+    prompt = st.text_input("Share your imaginations", value="Infinity pool view")
     prompt_execute = st.form_submit_button("Generate")
     if prompt_execute:
         st.image(execute_image_api(prompt))

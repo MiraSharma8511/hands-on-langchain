@@ -17,6 +17,7 @@ openai.api_key = os.environ['OPENAI_API_KEY']
 st.set_page_config(page_title="Video Analysis")
 st.header("Video Analysis using OpenAI🎥📷")
 
+st.write("NOTE: We are facing problem with issue")
 
 def download_video_from_youtube(link, save_path):
     yt = YouTube(link)
@@ -60,7 +61,10 @@ def rename_file():
 
 
 def video_analysis(base64frames, fc):
-    prompt = "These are frames from a video that I want to upload." + " Check the video frames and answer the question: \"" + user_question + "\" If you don't find answer after going through all frames from the video then revert back with - UNABLE TO FIND IN VIDEO."
+    prompt = ("These are frames from a video that I want to upload." +
+              " Check the video frames and answer the question: \"" + user_question +
+              "\" If you don't find answer after going through all frames from the video then revert back with "
+              "- UNABLE TO FIND IN VIDEO.")
     # print(prompt)
 
     PROMPT_MESSAGES = [
@@ -88,7 +92,7 @@ def audio_generation(base64frames, fc):
             "role": "user",
             "content": [
                 "These are frames of a video. Create a short voiceover script in english. Only include the narration.",
-                    *map(lambda x: {"image": x, "resize": 768}, base64frames[0::fc]),
+                *map(lambda x: {"image": x, "resize": 768}, base64frames[0::fc]),
             ],
         },
     ]
@@ -147,14 +151,21 @@ client = OpenAI()
 with st.form("Video_analysis"):
     st.write("NOTE: This is only for demo purpose and not for industrial usage for now. To avoid heavy charges keep "
              "video link <= 2mins.")
-    video_link = st.text_input("Enter video link.", value="https://www.youtube.com/watch?v=d95PPykB2vE")
+
+    st.write("NOTE: We had to discontinue providing realtime video analysis from youtube link due to typical issue in "
+             "pytube library that is supported for getting youtube video download for processing.")
+    st.write("____________________________________________________________________________________")
+    # video_link = st.text_input("Enter video link.", value="https://www.youtube.com/watch?v=d95PPykB2vE")
+    st.write("Hit start button to get started with locally available video")
     submit = st.form_submit_button("Start")
-    path = r"./pages/video"
+
+    # path = r"./pages/video"
+    path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video"
     if submit:
-        delete_files(path)
-        download_video_from_youtube(video_link, path)
-        rename_file()
-        video_read_path = "./pages/video/video_analysis.mp4"
+        # delete_files(path)
+        # download_video_from_youtube(video_link, path)
+        # rename_file()
+        video_read_path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video\video.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()
@@ -176,7 +187,7 @@ with st.form("GetVideoURL"):
     user_question = st.text_area("Ask anything related to the video", value="How is the weather?")
     get_answer = st.form_submit_button("Get Answer")
     if get_answer:
-        video_read_path = "./pages/video/video_analysis.mp4"
+        video_read_path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video\video.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()

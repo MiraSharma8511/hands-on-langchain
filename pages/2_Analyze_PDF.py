@@ -3,12 +3,14 @@ import streamlit as st
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores.faiss import FAISS
 from langchain.chains.question_answering import load_qa_chain
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
+# from langchain_openai import OpenAI
 from langchain_community.callbacks import get_openai_callback
 import os
 import openai
+from openai import OpenAI
 
 # def main():
 load_dotenv()
@@ -54,13 +56,13 @@ if pdf is not None:
     if user_question:
         docs = knowledge_base.similarity_search(user_question)
 
-        llm = OpenAI()
+        llm = ChatOpenAI()
         chain = load_qa_chain(llm)
 
         st.session_state.messages.append({"role": "user", "content": user_question})
         st.chat_message("user").write(user_question)
         client = OpenAI(api_key=openai_api_key)
-        response = client.chat.completions.create(model="gpt-3.5-turbo", messages=st.session_state.messages)
+        response = client.chat.completions.create(model="gpt-4o-mini", messages=st.session_state.messages)
         msg = response.choices[0].message.content
         st.session_state.messages.append({"role": "assistant", "content": msg})
         st.chat_message("assistant").write(msg)

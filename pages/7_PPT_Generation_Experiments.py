@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import re
 from pexelsapi.pexels import Pexels
 from pptx import Presentation
+from pytube import YouTube
 
 load_dotenv()
 openai.api_key = os.environ['OPENAI_API_KEY']
@@ -85,7 +86,7 @@ def response_parser_response_to_ppt_slides(response_to_parse):
         # if ppt_name != "":
         #     file_name = ppt_name + ".pptx"
         #     print(file_name)
-        prs.save("AI_Generated_PPT.pptx")
+        prs.save("generated.pptx")
         if i == (len(slide_list) - 1):
             st.title("AI_Generated_PPT.pptx created and saved to folder")
         # image = slide_list[i]['Image']
@@ -113,15 +114,17 @@ with st.form("ppt_generation_prompt"):
                     RULE-4: Each slide must be separated by "_________________________________"
                     RULE-5: Don't add slide number 
                     RULE-6: Differentiate content between 1000 and 5000 characters only HARD RULE : Follow all above rules""" % (
-        number_of_slides, topic))
+            number_of_slides, topic))
         print(prompt)
 
 with st.spinner("Generating content..."):
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[{"role": "system", "content": "You are a helpful assistant."},
                   {"role": "user", "content": prompt}]
         # prompt_text
     ).choices[0].message.content
     print(response)
     response_parser_response_to_ppt_slides(response)
+
+
