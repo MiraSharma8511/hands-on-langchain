@@ -26,8 +26,7 @@ with st.form("basic_chain"):
     execute = st.form_submit_button("🚀 Execute")
     if execute:
         with st.spinner('Processing your request...'):
-
-            model = ChatOpenAI(temperature=0.0)
+            lang_model = ChatOpenAI(model="gpt-4o", temperature=0.0)
 
             product_schema = ResponseSchema(name="product",
                                             description="Was the item purchased?\
@@ -96,7 +95,7 @@ with st.form("basic_chain"):
                 partial_variables={"format_instructions": format_instructions},
             )
 
-            chain = prompt | model | output_parser
+            chain = prompt | lang_model | output_parser
 
             output = chain.invoke({"customer review": customer_review})
 
