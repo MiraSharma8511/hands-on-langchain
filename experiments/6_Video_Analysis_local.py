@@ -155,7 +155,7 @@ with st.form("Video_analysis"):
         delete_files(path)
         download_video_from_youtube(video_link, path)
         rename_file()
-        video_read_path = "./pages/video/video_analysis.mp4"
+        video_read_path = "./pages/video/video_long.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()
@@ -177,7 +177,7 @@ with st.form("GetVideoURL"):
     user_question = st.text_area("Ask anything related to the video", value="Who is girl in the video?")
     get_answer = st.form_submit_button("Get Answer")
     if get_answer:
-        video_read_path = "./pages/video/video_analysis.mp4"
+        video_read_path = "./pages/video/video_long.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()

@@ -19,9 +19,12 @@ st.header("Video Analysis using OpenAI🎥📷")
 
 st.write("NOTE: We are facing problem with issue")
 
+
 def download_video_from_youtube(link, save_path):
     yt = YouTube(link)
     yt_video = yt.streams.get_highest_resolution()
+    # yt_video = yt.streams.first()
+    # yt_video = yt.streams.get_by_resolution("720p60")
     # download the video
     yt_video.download(save_path)
 
@@ -48,7 +51,7 @@ def rename_file():
     first_file = files[0]
 
     # Get the new file name
-    new_file_name = "video_analysis.mp4"
+    new_file_name = "video_long.mp4"
 
     # Rename the file
     os.rename(os.path.join(folder_path, first_file), os.path.join(folder_path, new_file_name))
@@ -165,7 +168,7 @@ with st.form("Video_analysis"):
         # delete_files(path)
         # download_video_from_youtube(video_link, path)
         # rename_file()
-        video_read_path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video\video.mp4"
+        video_read_path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video\video_long.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()
@@ -187,7 +190,7 @@ with st.form("GetVideoURL"):
     user_question = st.text_area("Ask anything related to the video", value="How is the weather?")
     get_answer = st.form_submit_button("Get Answer")
     if get_answer:
-        video_read_path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video\video.mp4"
+        video_read_path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video\video_long.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()

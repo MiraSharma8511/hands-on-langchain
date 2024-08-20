@@ -20,9 +20,9 @@ def execute_image_api(user_prompt):
     response = client.images.generate(
         model="dall-e-3",
         prompt=user_prompt,
-        size="512x512",
+        size="1024x1024",
         quality="standard",
-        n=2,
+        n=1,
     )
     image_url = response.data[0].url
     return image_url

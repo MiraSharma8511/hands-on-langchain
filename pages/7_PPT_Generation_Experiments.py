@@ -108,7 +108,7 @@ with st.form("ppt_generation_prompt"):
     if submitted:
         prompt = (
                 """Generate %s slide of content for PPT on %s. Follow below rules:
-                    RULE-1: Generate content for the topic provided instead of suggesting how to create a PPT for that topic
+                    RULE-1: Generate content for the topic provided, DO NOT suggest what to put on the slide or how to create a PPT for that topic.
                     RULE-2: Each slide must contain "Title:","Image: ","Details: "
                     RULE-3: For details in each slides keep content with bulletin points  
                     RULE-4: Each slide must be separated by "_________________________________"

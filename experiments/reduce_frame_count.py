@@ -50,7 +50,7 @@ def reduce_frame_counts(v_f):
     print(frameCounts, "reduced count frames read.")
 
 
-video_read_path = "./pages/video/video_analysis.mp4"
+video_read_path = "./pages/video/video_long.mp4"
 # video = cv2.VideoCapture(video_read_path)
-# get_frame_count("video_analysis.mp4")
-reduce_frame_counts("video_analysis.mp4")
+# get_frame_count("video_long.mp4")
+reduce_frame_counts("video_long.mp4")

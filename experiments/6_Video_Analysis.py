@@ -72,7 +72,7 @@ with st.form("Video_analysis"):
         delete_files(path)
         download_video_from_youtube(video_link, path)
         rename_file()
-        video_read_path = "./pages/video/video_analysis.mp4"
+        video_read_path = "./pages/video/video_long.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()

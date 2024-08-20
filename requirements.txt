@@ -17,3 +17,4 @@ pytube~=15.0.0
 moviepy~=1.0.3
 pillow~=10.2.0
 ipython~=8.23.0
+pytubefix-6.12.0

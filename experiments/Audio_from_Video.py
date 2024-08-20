@@ -41,6 +41,6 @@ with st.form("audio_from_video"):
     submit = st.form_submit_button("Start")
     path = r"./pages/video"
     if submit:
-        video_read_path = "./pages/video/video_analysis.mp4"
+        video_read_path = "./pages/video/video_long.mp4"
         st.video(video_link)
         extract_audio(video_read_path)
