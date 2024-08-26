@@ -13,7 +13,7 @@ st.header("Image Analysis | Chat with image")
 client = OpenAI()
 
 with st.form("imageurl"):
-    imageURL = st.text_input("Enter the image URL here")
+    imageURL = st.text_input("Enter the image URL here", value="https://i.ibb.co/F3YJFXc/architectural-diagram-2.png")
     ask_question = st.text_area("ask your question")
     submitted = st.form_submit_button("Submit")
     if submitted:

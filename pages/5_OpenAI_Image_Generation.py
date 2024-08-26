@@ -29,6 +29,7 @@ def execute_image_api(user_prompt):
 
 
 with st.form("image_generation"):
+    #animated 2 fluffy cute pink and blue creature playing in kinder garden in a town
     prompt = st.text_input("Share your imaginations", value="Infinity pool view")
     prompt_execute = st.form_submit_button("Generate")
     if prompt_execute:
