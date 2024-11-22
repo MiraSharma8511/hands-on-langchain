@@ -4,6 +4,8 @@ import shutil
 import cv2  # To import use !pip install opencv-python
 import base64
 
+## checking error
+
 from dotenv import load_dotenv
 from openai import OpenAI
 import os
