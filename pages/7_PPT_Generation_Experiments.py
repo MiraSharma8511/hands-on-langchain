@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 import re
 from pexelsapi.pexels import Pexels
 from pptx import Presentation
-from pytube import YouTube
 
 load_dotenv()
 openai.api_key = os.environ['OPENAI_API_KEY']
