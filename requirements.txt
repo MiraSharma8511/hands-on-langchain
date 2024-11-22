@@ -1,5 +1,5 @@
 opencv-python-headless~=4.9.0.80
-langchain~=0.2.7
+langchain
 langchain-openai==0.0.6
 langchain-core~=0.1.52
 PyPDF2==3.0.1
