@@ -4,6 +4,8 @@ import shutil
 import cv2  # To import use !pip install opencv-python
 import base64
 
+## checking error
+
 from dotenv import load_dotenv
 from openai import OpenAI
 import os
@@ -15,14 +17,18 @@ load_dotenv()
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 st.set_page_config(page_title="Video Analysis")
-st.header("Million dollar Video Analysis🎥📷")
+st.header("Video Analysis using OpenAI🎥📷")
+
+st.write("NOTE: We are facing problem with issue")
 
 
-def download_video_from_youtube(link, path):
+def download_video_from_youtube(link, save_path):
     yt = YouTube(link)
     yt_video = yt.streams.get_highest_resolution()
+    # yt_video = yt.streams.first()
+    # yt_video = yt.streams.get_by_resolution("720p60")
     # download the video
-    yt_video.download(path)
+    yt_video.download(save_path)
 
 
 def delete_files(folder_path):
@@ -38,7 +44,7 @@ def delete_files(folder_path):
 
 def rename_file():
     # Get the path to the folder
-    folder_path = "./pages/video"
+    folder_path = r"./pages/video"
 
     # Get a list of all the files in the folder
     files = os.listdir(folder_path)
@@ -47,16 +53,102 @@ def rename_file():
     first_file = files[0]
 
     # Get the new file name
-    new_file_name = "video_analysis.mp4"
+    new_file_name = "video_long.mp4"
 
     # Rename the file
     os.rename(os.path.join(folder_path, first_file), os.path.join(folder_path, new_file_name))
     src = folder_path + "/" + new_file_name
     print(src)
-    dst = r"./data"
-    shutil.copyfile(src, dst)
+    dst = r"./"
+    # shutil.copyfile(src, dst)
     # 2nd option
     shutil.copy2(src, dst)  # dst can be a folder; use shutil.copy2() to preserve timestamp
+
+
+def video_analysis(base64frames, fc):
+    prompt = ("These are frames from a video that I want to upload." +
+              " Check the video frames and answer the question: \"" + user_question +
+              "\" If you don't find answer after going through all frames from the video then revert back with "
+              "- UNABLE TO FIND IN VIDEO.")
+    # print(prompt)
+
+    PROMPT_MESSAGES = [
+        {
+            "role": "user",
+            "content": [
+                prompt,
+                *map(lambda x: {"image": x, "resize": 768}, base64frames[0::fc]),
+            ],
+        },
+    ]
+    params = {
+        "model": "gpt-4-vision-preview",
+        "messages": PROMPT_MESSAGES,
+        "max_tokens": 1500,
+    }
+
+    result = client.chat.completions.create(**params)
+    st.write(result.choices[0].message.content)
+
+
+def audio_generation(base64frames, fc):
+    PROMPT_MESSAGES = [
+        {
+            "role": "user",
+            "content": [
+                "These are frames of a video. Create a short voiceover script in english. Only include the narration.",
+                *map(lambda x: {"image": x, "resize": 768}, base64frames[0::fc]),
+            ],
+        },
+    ]
+
+    params = {
+        "model": "gpt-4-vision-preview",
+        "messages": PROMPT_MESSAGES,
+        "max_tokens": 1500,
+    }
+
+    result = client.chat.completions.create(**params)
+    st.title("Audio content")
+    st.write(result.choices[0].message.content)
+
+    with st.spinner("Loading content..."):
+        response = requests.post(
+            "https://api.openai.com/v1/audio/speech",
+            headers={
+                "Authorization": f"Bearer {openai.api_key}",
+            },
+            json={
+                "model": "tts-1-1106",
+                "input": result.choices[0].message.content,
+                "voice": "onyx",
+            },
+        )
+
+        audio = b""
+        for chunk in response.iter_content(chunk_size=1024 * 1024):
+            audio += chunk
+
+        st.audio(audio)
+
+
+def read_video_file(v_file):
+    base64frames = []
+    count = 0
+    with st.spinner("Working"):
+        while v_file.isOpened():
+            success, frame = v_file.read()
+            if not success:
+                break
+            _, buffer = cv2.imencode(".jpg".format(count), frame)
+            count += 10  # i.e. at 30 fps, this advances one second
+            v_file.set(cv2.CAP_PROP_POS_FRAMES, count)
+            base64frames.append(base64.b64encode(buffer).decode("utf-8"))
+
+        v_file.release()
+        frameCounts = len(base64frames)
+        st.write(frameCounts, "frames read.")
+        return base64frames, frameCounts
 
 
 client = OpenAI()
@@ -64,101 +156,46 @@ client = OpenAI()
 with st.form("Video_analysis"):
     st.write("NOTE: This is only for demo purpose and not for industrial usage for now. To avoid heavy charges keep "
              "video link <= 2mins.")
-    video_link = st.text_input("Enter video link.", value="https://www.youtube.com/watch?v=d95PPykB2vE")
-    user_question = st.text_area("Ask anything related to the video", value="What is the video about? Tell me video summary")
+
+    st.write("NOTE: We had to discontinue providing realtime video analysis from youtube link due to typical issue in "
+             "pytube library that is supported for getting youtube video download for processing.")
+    st.write("____________________________________________________________________________________")
+    # video_link = st.text_input("Enter video link.", value="https://www.youtube.com/watch?v=d95PPykB2vE")
+    st.write("Hit start button to get started with locally available video")
     submit = st.form_submit_button("Start")
-    path = "./pages/video"
+
+    # path = r"./pages/video"
+    path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video"
     if submit:
-        delete_files(path)
-        download_video_from_youtube(video_link, path)
-        rename_file()
-        video_read_path = "./pages/video/video_long.mp4"
+        # delete_files(path)
+        # download_video_from_youtube(video_link, path)
+        # rename_file()
+        video_read_path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video\video_long.mp4"
         video = cv2.VideoCapture(video_read_path)
         video_file = open(video_read_path, 'rb')
         video_bytes = video_file.read()
         st.video(video_bytes)
+        read_video_file(video)
 
-        base64Frames = []
+        # exit()
+        # display_handle = display(None, display_id=True)
+        # for img in base64Frames:
+        #     st.image(img)
+        # img_data = base64.b64decode(frame.encode("utf-8"))
+        # display_handle.display(Image(data=img_data))
+        # im = Image.open(r"path to your image")  # r to convert it to a raw string
+        # im.show()
+        # display_handle.update(Image(data=base64.b64decode(img.encode("utf-8"))))
+        # time.sleep(0.025)
 
-        with st.spinner("Working"):
-            while video.isOpened():
-                success, frame = video.read()
-                if not success:
-                    break
-                _, buffer = cv2.imencode(".jpg", frame)
-                base64Frames.append(base64.b64encode(buffer).decode("utf-8"))
-
-            video.release()
-            frame_counts = len(base64Frames)
-            st.write(frame_counts, "frames read.")
-
-            # exit()
-            # display_handle = display(None, display_id=True)
-            # for img in base64Frames:
-            #     st.image(img)
-            # img_data = base64.b64decode(frame.encode("utf-8"))
-            # display_handle.display(Image(data=img_data))
-            # im = Image.open(r"path to your image")  # r to convert it to a raw string
-            # im.show()
-            # display_handle.update(Image(data=base64.b64decode(img.encode("utf-8"))))
-            # time.sleep(0.025)
-
-            prompt = "These are frames from a video that I want to upload." + " Check the video frames and answer the question: \"" + user_question + "\" If you don't find answer after going through all frames from the video then revert back with - UNABLE TO FIND IN VIDEO."
-            # print(prompt)
-
-            PROMPT_MESSAGES = [
-                {
-                    "role": "user",
-                    "content": [
-                        prompt,
-                        *map(lambda x: {"image": x, "resize": 768}, base64Frames[0::frame_counts]),
-                    ],
-                },
-            ]
-            params = {
-                "model": "gpt-4-vision-preview",
-                "messages": PROMPT_MESSAGES,
-                "max_tokens": 4096,
-            }
-
-            result = client.chat.completions.create(**params)
-            st.write(result.choices[0].message.content)
-
-            PROMPT_MESSAGES = [
-                {
-                    "role": "user",
-                    "content": [
-                        "These are frames of a video. Create a short voiceover script in english. Only include the narration.",
-                        *map(lambda x: {"image": x, "resize": 768}, base64Frames[0::frame_counts]),
-                    ],
-                },
-            ]
-
-            params = {
-                "model": "gpt-4-vision-preview",
-                "messages": PROMPT_MESSAGES,
-                "max_tokens": 4096,
-            }
-
-            result = client.chat.completions.create(**params)
-            st.title("Audio content")
-            st.write(result.choices[0].message.content)
-
-        with st.spinner("Loading content..."):
-            response = requests.post(
-                "https://api.openai.com/v1/audio/speech",
-                headers={
-                    "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
-                },
-                json={
-                    "model": "tts-1-1106",
-                    "input": result.choices[0].message.content,
-                    "voice": "onyx",
-                },
-            )
-
-            audio = b""
-            for chunk in response.iter_content(chunk_size=1024 * 1024):
-                audio += chunk
-
-            st.audio(audio)
+with st.form("GetVideoURL"):
+    user_question = st.text_area("Ask anything related to the video", value="How is the weather?")
+    get_answer = st.form_submit_button("Get Answer")
+    if get_answer:
+        video_read_path = r"E:\Machine Learning Coding\hands-on-langchain\pages\video\video_long.mp4"
+        video = cv2.VideoCapture(video_read_path)
+        video_file = open(video_read_path, 'rb')
+        video_bytes = video_file.read()
+        base64Frames, frame_counts = read_video_file(video)
+        video_analysis(base64Frames, frame_counts)
+        audio_generation(base64Frames, frame_counts)
