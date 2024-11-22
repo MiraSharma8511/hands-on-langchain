@@ -5,5 +5,5 @@ st.set_page_config(
     page_icon="🚀"
 )
 
-st.title("🚀 LLM Demo Repository")
-st.subheader("Everything available here 😉")
+st.title("🚀 GenAI Application Demo Repository")
+#st.subheader("Everything available here 😉")
