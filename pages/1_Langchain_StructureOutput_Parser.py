@@ -22,7 +22,7 @@ st.set_page_config(
 
 st.header(" Structure Output Parser")
 with st.form("basic_chain"):
-    customer_review = st.text_area("Enter customer review")
+    customer_review = st.text_area("Enter customer review", value="I bought a butterflow ballpen for my friend as a birthday gift and found it to be very happy to see it. It got it delivered in just 20mins")
     execute = st.form_submit_button("🚀 Execute")
     if execute:
         with st.spinner('Processing your request...'):
