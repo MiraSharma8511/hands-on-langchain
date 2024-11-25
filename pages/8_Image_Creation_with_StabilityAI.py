@@ -8,8 +8,8 @@ load_dotenv()
 stability_api = os.environ['STABILITY_API_KEY']
 
 with st.form("get_image_input"):
-    prompt = st.text_input("Enter prompt for image generation")
-    file_name = st.text_input("Enter file name to save file")
+    prompt = st.text_input("Enter prompt for image generation", value = "Golden gate of fortune")
+    file_name = st.text_input("Enter file name to save file", value="golden-gate-fortune")
     submit = st.form_submit_button("Generate Image")
     if submit:
         response = requests.post(
